@@ -1,9 +1,8 @@
-#!/usr/bin/env julia
-#
 # title: neten.jl
 # author: twab
-# description: julia implementation of network enhancement
-#
+# description: julia implementation of network enhancement algorithm
+# license: MIT
+
 module neten
 
 ## ---- imports
@@ -12,23 +11,36 @@ using RData
 using LinearAlgebra
 
 
-
 ## ---- functions
 
-function load_rdata(rdata::String, package::String)
-	# FIXME: why not have function data(String)?
-	# load any data object associated with an R package
-	# NOTE: this doesn't work as expected bc most package data is not saved
-	# internally as .rda
-	# construct path to R data.rda file in data/
-	file = joinpath("data","$rdata.rda")
-	# construct R command
-	cmd = "system.file('$file', package='$package')"
-	# parse output of R command
-	out = read(`Rscript -e $cmd`,String)
-	path = strip(split(out)[2],'\"')
-	return load(path)[rdata]
+function hello()
+		# a function for testing
+		println("Hello World!")
 end
+
+
+function data(rdata::String)
+		# load package data
+		# using RData
+		path = joinpath(dirname(pathof(neten)),"data","$rdata.rda")
+		return load(path)[rdata]
+end
+
+
+#function load_rdata(rdata::String, package::String)
+#	# FIXME: why not have function data(String)?
+#	# load any data object associated with an R package
+#	# NOTE: this doesn't work as expected bc most package data is not saved
+#	# internally as .rda
+#	# construct path to R data.rda file in data/
+#	file = joinpath("data","$rdata.rda")
+#	# construct R command
+#	cmd = "system.file('$file', package='$package')"
+#	# parse output of R command
+#	out = read(`Rscript -e $cmd`,String)
+#	path = strip(split(out)[2],'\"')
+#	return load(path)[rdata]
+#end
 
 
 function colSums(a::Array{Float64,2}, dropdim::Bool=true)
@@ -99,7 +111,7 @@ function transitionFields(Win::Array{Float64,2})
 end
 
 
-function neten(Win::Array{Float64,2}, k::Int64=20, alpha::Float64=0.9, diffusion::Float64=2.0)
+function enhance(Win::Array{Float64,2}, k::Int64=20, alpha::Float64=0.9, diffusion::Float64=2.0)
 	# network enhancement diffusion process is given by:
 	# W_{t+1} = αΓ x W_{t} x Γ + Γ(1 - α) (eq 2)
 	# set diag == 0
@@ -143,6 +155,8 @@ end
 
 ## ---- exports
 
-@export neten
+export hello
+export data
+export enhance 
 
 end

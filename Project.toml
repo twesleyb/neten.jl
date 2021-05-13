@@ -3,6 +3,10 @@ uuid = "c6317dd7-74d0-485e-9c25-1656c63b7b1d"
 authors = ["Tyler Bradshaw"]
 version = "0.1.0"
 
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+RData = "df47a6cb-8c03-5eed-afd8-b6050d6c41da"
+
 [compat]
 julia = "1"
 
